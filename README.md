@@ -1,5 +1,8 @@
 # SQLiteVec
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjkrukowski%2FSQLiteVec%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/jkrukowski/SQLiteVec)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fjkrukowski%2FSQLiteVec%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/jkrukowski/SQLiteVec)
+
 Swift bindings for [sqlite-vec](https://github.com/asg017/sqlite-vec)
 
 ## Installation
@@ -12,7 +15,7 @@ The [Swift Package Manager](https://www.swift.org/documentation/package-manager/
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jkrukowski/SQLiteVec", from: "0.0.2")
+    .package(url: "https://github.com/jkrukowski/SQLiteVec", from: "0.0.9")
 ]
 ```
 
@@ -48,9 +51,9 @@ try await db.execute("CREATE VIRTUAL TABLE vec_items USING vec0(embedding float[
 for row in data {
     try await db.execute(
         """
-            INSERT INTO vec_items(rowid, embedding) 
+            INSERT INTO vec_items(rowid, embedding)
             VALUES (?, ?)
-        """, 
+        """,
         params: [row.index, row.vector]
     )
 }
@@ -58,10 +61,10 @@ for row in data {
 // query the embeddings
 let result = try await db.query(
     """
-        SELECT rowid, distance 
-        FROM vec_items 
-        WHERE embedding MATCH ? 
-        ORDER BY distance 
+        SELECT rowid, distance
+        FROM vec_items
+        WHERE embedding MATCH ?
+        ORDER BY distance
         LIMIT 3
     """,
     params: [query]
@@ -81,6 +84,10 @@ It should print the following result:
 ]
 ```
 
+## Examples
+
+You can find more examples in the [examples](examples) directory.
+
 ## Testing
 
 ```bash
@@ -90,7 +97,15 @@ $ swift test
 To test it on docker swift image run:
 
 ```bash
-$ docker build -f DOCKERFILE -t linuxbuild . && docker run linuxbuild
+$ docker build -f Dockerfile -t linuxbuild . && docker run linuxbuild
+```
+
+## Code Formatting
+
+This project uses [swift-format](https://github.com/swiftlang/swift-format). To format the code run:
+
+```bash
+swift format . -i -r --configuration .swift-format
 ```
 
 ## Acknowledgements

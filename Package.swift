@@ -1,10 +1,16 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "SQLiteVec",
+    platforms: [
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
+        .macOS(.v10_15),
+    ],
     products: [
         .executable(
             name: "SQLiteVecCLI",
@@ -23,26 +29,29 @@ let package = Package(
         .executableTarget(
             name: "SQLiteVecCLI",
             dependencies: [
-                "SQLiteVec",
+                "SQLiteVec"
             ]
         ),
         .target(
             name: "SQLiteVec",
             dependencies: [
-                "CSQLiteVec",
+                "CSQLiteVec"
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
+                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .target(
             name: "CSQLiteVec",
-            publicHeadersPath: "include"
+            publicHeadersPath: "include",
+            cSettings: [
+                .define("SQLITE_ENABLE_FTS5")
+            ]
         ),
         .testTarget(
             name: "SQLiteVecTests",
             dependencies: [
-                "SQLiteVec",
+                "SQLiteVec"
             ]
         ),
     ]
